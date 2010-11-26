@@ -40,11 +40,16 @@ end
  
  # Print all of the networks associated with a POC
  response = ARIN.get("/poc/BITPU-ARIN/nets")
- p response.parsed_response["nets"] 
- p "\n"
+ p response.parsed_response["nets"]["netPocLinkRef"]
+ puts "\n"
  # Print all of the ASNs associated with a POC
  response = ARIN.get("/poc/BITPU-ARIN/asns")
- p response.parsed_response["asns"]
+ #p response
+ 
+ # No idea why ARIN returns 3 responses, but they get turned into an array so we can move on.
+ 
+ p response.parsed_response["asns"]["asnPocLinkRef"][1].to_s.gsub(/http:\/\/whois.arin.net\/rest\/asn\/AS/, ' ')
+ 
 
 # ARIN Customer experimentation
 
