@@ -65,10 +65,9 @@ end
 
  packet = Net::DNS::Resolver.start("bitpusher.com")
  packet.each_address do |ip|
-      puts "#{ip}"
       response = ARIN.get("/ip/#{ip}")
+      puts "#{ip}" + "'s Associated AS Number is " + response.parsed_response["net"]["originASes"]["originAS"]
     end
-    p response.parsed_response["net"]["originASes"]["originAS"]
  
 # ARIN Customer experimentation
 
