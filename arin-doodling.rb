@@ -3,6 +3,7 @@ require 'rubygems'
 require 'httparty'
 require 'rest_client'
 require 'pp'
+require 'net/dns/resolver'
 
 # ARIN's Web Services data model has five main first-order objects: networks, autonomous system numbers (asn), organizations, points of contacts, and customer
 
@@ -12,6 +13,12 @@ class ARIN
 end
 
 # ARIN Network experimentation
+ # Fields in a NET Record
+ # ["name", "startAddress", "handle", "updateDate", "parentNetRef", "originASes", "orgRef", "version", "endAddress", "nameservers", "netBlocks", "ref", "termsOfUse", "registrationDate", "xmlns"]
+ 
+ response = ARIN.get("/net/NET-208-75-56-0-1")
+ p response.parsed_response["net"]["netBlocks"]
+ 
 # ARIN Autonomous System Numbers experimentation
 # ARIN Organization experimentation
  # Fields in an ORG Record
@@ -23,6 +30,10 @@ end
  p response.parsed_response["org"].keys
  puts "\n"
 
+ # The ability to get a bio on an IP address is really fucking  useful.
+ response = ARIN.get("/ip/208.75.57.232")
+ p response
+ 
 # ARIN Point Of Contact experimentation
  # Fields in a POC record
  # ["city", "comment", "iso3166_2", "companyName", "handle", "lastName", "updateDate", "postalCode", "streetAddress", "firstName", "emails", "phones", "ref", "termsOfUse", "registrationDate", "xmlns", "iso3166_1"]
@@ -50,6 +61,15 @@ end
  p response.parsed_response["asns"]["asnPocLinkRef"][0].to_s.gsub(/http:\/\/whois.arin.net\/rest\/asn\/AS/, '')
  
 
+# puts Resolver("www.bitpusher.com").answer
+
+ packet = Net::DNS::Resolver.start("bitpusher.com")
+ packet.each_address do |ip|
+      puts "#{ip}"
+      response = ARIN.get("/ip/#{ip}")
+    end
+    p response.parsed_response["net"]["originASes"]["originAS"]
+ 
 # ARIN Customer experimentation
 
 # Scratch
