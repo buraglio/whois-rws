@@ -7,7 +7,6 @@ require 'httparty'
 require 'rest_client'
 require 'net/dns/resolver'
 
-abort("Give me some arguments motherfucker!") unless ARGV[0]
 
 class ARIN
   include HTTParty
