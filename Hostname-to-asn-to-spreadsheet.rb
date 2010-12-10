@@ -12,17 +12,19 @@ class ARIN
   include HTTParty
   base_uri 'http://whois.arin.net/rest'
     
+  # Returns the organization handle which is associated with the network assignment which owns the IP address
+  # given to the method as an argument.
   def self.org_handle(ip)
-    # Ask ARIN which ORG handle owns the IP address passed to this method
     get("/ip/#{ip}").parsed_response["net"]["orgRef"].to_s.split('/').last
-      end
+  end
     
+  # Returns Autonomous Systems Number associated with an organization handle.
   def self.as_number(orghandle)
     # Ask ARIN which ASN owns the orghandle passed to this method
     get("/org/#{orghandle}/asns").parsed_response["asns"]["asnRef"].to_s.split('/').last
   end
   
-  # Return a hash of all networks owned by a given orghandle
+  # Returns a hash of all network prefixes owned by a given orghandle
   def self.networks(orghandle)
     get("/org/#{orghandle}/nets").parsed_response["nets"]["netRef"]
   end
