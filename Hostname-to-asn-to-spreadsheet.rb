@@ -2,7 +2,7 @@
 
 require 'rubygems'
 require 'httparty'
-require 'rest_client'
+require 'rest-client'
 require 'net/dns/resolver'
 require 'google_spreadsheet'
 #require 'em-resolv-replace'
